@@ -1,0 +1,64 @@
+
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        int n = s.nextInt();
+        ArrayList<Integer> heap = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            int k = s.nextInt();
+            heap.add(k);
+            int now = heap.size() - 1;
+            int parent = (now - 1) / 2;
+            while(now > 0 && heap.get(parent) < heap.get(now)){
+                int t = heap.get(parent);
+                heap.add(parent, heap.get(now));
+                heap.add(now, t);
+                now = parent;
+                parent  = (now - 1) / 2;
+            }
+        }
+        int q = s.nextInt();
+        for (int i = 0; i < q; i++) {
+            String str = s.next();
+            if (str.equals("get")){
+                System.out.println(heap.get(0));
+            }
+            if (str.equals("add")){
+                int k  = s.nextInt();
+                heap.add(k);
+                int now = heap.size() - 1;
+                int parent = (now - 1) / 2;
+                while(now > 0 && heap.get(parent) < heap.get(now)){
+                    int t = heap.get(parent);
+                    heap.add(parent, heap.get(now));
+                    heap.add(now, t);
+                    now = parent;
+                    parent  = (now - 1) / 2;
+                }
+            }
+            if (str.equals("remove")){
+                int dt = heap.get(0);
+                int now = 0;
+                heap.set(0, heap.get(heap.size()-1));
+                heap.remove(heap.size()-1);
+                System.out.println(dt);
+                while(2 * now + 1 < heap.size()){
+                    int left = 2 * now + 1;
+                    int right = 2 * now + 2;
+                    int j = left;
+                    if (right < heap.size() && heap.get(right) < heap.get(left)){
+                        j  =right;
+                    }
+                    if (heap.get(now) <= heap.get(j)) break;
+                    int t = heap.get(now);
+                    heap.set(now, heap.get(j));
+                    heap.set(j, t);
+                    now = j;
+                }
+            }
+        }
+    }
+}
